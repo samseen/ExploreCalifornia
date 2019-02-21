@@ -24,6 +24,23 @@ namespace ExploreCalifornia.Controllers
             return query.ToList();
         }
 
+        public Tour GetById(int id)
+        {
+            var item = _context.Tours
+                .Where(i => i.TourId == id)
+                .FirstOrDefault();
+
+            return item;
+        }
+        public Tour GetByName(string name)
+        {
+            var item = _context.Tours
+                .Where(i => i.Name.Contains(name))
+                .FirstOrDefault();
+
+            return item;
+        }
+
         [HttpPost]
         public List<Tour> SearchTours([FromBody]TourSearchRequestDto request)
         {

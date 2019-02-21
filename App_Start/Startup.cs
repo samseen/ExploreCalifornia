@@ -32,7 +32,14 @@ namespace ExploreCalifornia
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                defaults: new { id = RouteParameter.Optional },
+                constraints: new { id = @"\d+"}
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "DefaultNameApi",
+                routeTemplate: "api/{controller}/{name}",
+                defaults: new { name = RouteParameter.Optional }
             );
 
             app.UseWebApi(config);
