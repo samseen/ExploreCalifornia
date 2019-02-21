@@ -4,25 +4,34 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using ExploreCalifornia.DataAccess;
+using ExploreCalifornia.DataAccess.Models;
 using ExploreCalifornia.DTOs;
 
 namespace ExploreCalifornia.Controllers
 {
     public class TourController : ApiController
     {
-        public IHttpActionResult Get()
+        private AppDataContext _context = new AppDataContext();
+        public List<Tour> Get(bool freeOnly = false)
         {
-            return Ok("Get");
+            var query = _context.Tours.AsQueryable();
+
+            if (freeOnly) query = query.Where(i => i.Price == 0.0m);
+
+            return query.ToList();
         }
 
-        public IHttpActionResult Post()
+        public List<Tour> PostSearch(TourSearchRequestDto request)
         {
-            return Ok("Post");
+            var query = _context.Tours.AsQueryable()
+                .Where(i => i.Price >= request.MinPrice && i.Price <= request.MaxPrice);
+
+            return query.ToList();
         }
         
-        public IHttpActionResult Put()
+        public IHttpActionResult Put(int id, Tour tour)
         {
-            return Ok("Put");
+            return Ok($"{id}: {tour.Name}");
         }
 
         public IHttpActionResult Patch()
