@@ -25,8 +25,15 @@ namespace ExploreCalifornia.Controllers
         }
 
         [HttpPost]
-        public List<Tour> SearchTour([FromBody]TourSearchRequestDto request)
+        public List<Tour> SearchTours([FromBody]TourSearchRequestDto request)
         {
+            if (request.MinPrice > request.MaxPrice)
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Content = new StringContent("MinPrice must be less than MaxPrice")
+                });
+
             var query = _context.Tours.AsQueryable()
                 .Where(i => i.Price >= request.MinPrice && i.Price <= request.MaxPrice);
 
