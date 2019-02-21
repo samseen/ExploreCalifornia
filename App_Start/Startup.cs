@@ -25,6 +25,8 @@ namespace ExploreCalifornia
         
         private static void ConfigureWebApi(IAppBuilder app, HttpConfiguration config)
         {
+            config.Formatters.XmlFormatter.UseXmlSerializer = true;
+
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
 
             config.Routes.MapHttpRoute(
