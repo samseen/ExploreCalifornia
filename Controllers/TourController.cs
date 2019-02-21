@@ -11,8 +11,11 @@ namespace ExploreCalifornia.Controllers
 {
     public class TourController : ApiController
     {
+        
         private AppDataContext _context = new AppDataContext();
-        public List<Tour> Get(bool freeOnly = false)
+
+        [HttpGet]
+        public List<Tour> GetAllTours([FromUri]bool freeOnly = false)
         {
             var query = _context.Tours.AsQueryable();
 
@@ -21,7 +24,8 @@ namespace ExploreCalifornia.Controllers
             return query.ToList();
         }
 
-        public List<Tour> PostSearch(TourSearchRequestDto request)
+        [HttpPost]
+        public List<Tour> SearchTour([FromBody]TourSearchRequestDto request)
         {
             var query = _context.Tours.AsQueryable()
                 .Where(i => i.Price >= request.MinPrice && i.Price <= request.MaxPrice);
@@ -29,15 +33,19 @@ namespace ExploreCalifornia.Controllers
             return query.ToList();
         }
         
+        [HttpPut]
         public IHttpActionResult Put(int id, Tour tour)
         {
             return Ok($"{id}: {tour.Name}");
         }
 
+        [HttpPatch]
         public IHttpActionResult Patch()
         {
             return Ok("Patch");
         }
+
+        [HttpDelete]
         public IHttpActionResult Delete()
         {
             return Ok("Delete");
