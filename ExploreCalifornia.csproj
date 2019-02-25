@@ -175,6 +175,7 @@
     <Compile Include="DataAccess\AppDataContext.cs" />
     <Compile Include="DataAccess\Models\AuthorizedApp.cs" />
     <Compile Include="DataAccess\Models\Tour.cs" />
+    <Compile Include="Filters\DbUpdateExceptionFilterAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
