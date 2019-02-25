@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -82,7 +83,20 @@ namespace ExploreCalifornia.Controllers
             }
 
             db.Reservations.Add(reservation);
-            await db.SaveChangesAsync();
+
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                if (!(ex?.InnerException?.InnerException is SqlException sqlException))
+                    throw;
+
+                if (sqlException.Number == 2627)
+                    throw new HttpResponseException(HttpStatusCode.Conflict);
+            }
+            
 
             return CreatedAtRoute("DefaultApi", new { id = reservation.ReservationId }, reservation);
         }
